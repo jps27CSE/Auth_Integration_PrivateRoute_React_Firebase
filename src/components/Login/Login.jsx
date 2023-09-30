@@ -3,8 +3,18 @@ import { AuthContext } from "../../Provider/AuthProvider";
 import { useNavigate } from "react-router-dom";
 
 const Login = () => {
-  const { loginUser } = useContext(AuthContext);
+  const { loginUser, loading, user } = useContext(AuthContext);
   const navigate = useNavigate();
+
+  if (loading) {
+    return (
+      <span className="loading loading-dots loading-lg flex item-center mx-auto"></span>
+    );
+  }
+  if (user) {
+    navigate("/");
+  }
+
   const handleFormSubmit = (e) => {
     e.preventDefault();
     const email = e.target.email.value;

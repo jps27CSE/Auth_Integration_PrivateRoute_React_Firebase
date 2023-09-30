@@ -1,13 +1,17 @@
 import { useContext } from "react";
-import { NavLink } from "react-router-dom";
+import { Link, NavLink, useNavigate } from "react-router-dom";
 import { AuthContext } from "../../Provider/AuthProvider";
 
 const Header = () => {
-  const { user, logOut } = useContext(AuthContext);
+  const { user, logOut, loading } = useContext(AuthContext);
+  const navigate = useNavigate();
 
   const handleSingOut = () => {
     logOut()
-      .then(() => console.log("user logged out successfully"))
+      .then(() => {
+        console.log("user logged out successfully");
+        navigate("/login");
+      })
       .catch((error) => console.error(error));
   };
 
@@ -28,7 +32,9 @@ const Header = () => {
       )}
     </>
   );
-  return (
+  return loading ? (
+    <span className="loading loading-dots loading-lg flex item-center mx-auto"></span>
+  ) : (
     <div>
       <div className="navbar bg-base-100">
         <div className="navbar-start">
@@ -75,16 +81,11 @@ const Header = () => {
                 className="menu menu-sm dropdown-content mt-3 z-[1] p-2 shadow bg-base-100 rounded-box w-52"
               >
                 <li>
-                  <a className="justify-between">
-                    Profile
-                    <span className="badge">New</span>
-                  </a>
+                  <Link to="/profile">
+                    <span className="justify-between">Profile</span>
+                  </Link>
                 </li>
                 <li>
-                  <a>Settings</a>
-                </li>
-                <li>
-                  {" "}
                   <a onClick={handleSingOut}>Logout</a>
                 </li>
               </ul>
