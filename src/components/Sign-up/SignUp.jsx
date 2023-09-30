@@ -1,9 +1,11 @@
 import { useContext } from "react";
 import { AuthContext } from "../../Provider/AuthProvider";
 import { updateProfile } from "firebase/auth";
+import { useNavigate } from "react-router-dom";
 
 const SignUp = () => {
   const { createUser } = useContext(AuthContext);
+  const navigate = useNavigate();
   const handleFormSubmit = (e) => {
     e.preventDefault();
     const name = e.target.name.value;
@@ -14,6 +16,7 @@ const SignUp = () => {
         updateProfile(result.user, {
           displayName: name,
         });
+        navigate("/");
         console.log(result);
       })
       .catch((error) => {
